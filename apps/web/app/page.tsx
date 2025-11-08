@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function Home(){ return (<div className="p-6"><h1 className="text-2xl font-bold">intern (Vercel + Render)</h1><nav className="mt-4"><Link href="/dashboard">Dashboard</Link> | <Link href="/chat">Chat</Link></nav></div>); }

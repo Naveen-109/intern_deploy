@@ -1,0 +1,4 @@
+import { Router } from "express";
+import { PrismaClient } from "@prisma/client";
+import { startOfYear } from "date-fns";
+export default function(prisma: PrismaClient){ const r=Router(); r.get("/", async (req,res)=>{ const now=new Date(); const startYear=startOfYear(now); const totalSpendYTDAgg=await prisma.invoice.aggregate({ where:{ date:{ gte: startYear } }, _sum:{ total:true } }); const totalInvoices=await prisma.invoice.count(); const documentsUploaded=await prisma.document.count(); const avgInvoice=await prisma.invoice.aggregate({ _avg:{ total:true } }); res.json({ totalSpendYTD: totalSpendYTDAgg._sum.total || 0, totalInvoicesProcessed: totalInvoices, documentsUploaded, averageInvoiceValue: Number(avgInvoice._avg.total || 0) }); }); return r; }
